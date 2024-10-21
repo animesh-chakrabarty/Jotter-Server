@@ -11,7 +11,7 @@ const app = express();
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`listening to PORT: ${PORT}`);
+      console.log(`Listening to PORT: ${PORT}`);
     });
   })
   .catch((err: any) => {
