@@ -1,13 +1,12 @@
-import express from "express";
-import { articleContorller } from "../controllers/index.js";
+import express, { Request, Response } from "express";
+import { controllers as articleController } from "../controllers/article.controllers.js";
 
 const articleRouter = express.Router();
 
-articleRouter.post("/create", articleContorller.createArticle);
-articleRouter.post("/delete", articleContorller.deleteArticle);
-articleRouter.post("/edit", articleContorller.editArticle);
-articleRouter.post("/:Id", articleContorller.fetchArticleById);
-articleRouter.post("/:userId", articleContorller.fetchArticleByUserId);
-articleRouter.post("/featured", articleContorller.fetchFeaturedArticle);
+articleRouter.post("/create", articleController.createArticle);
+articleRouter.post("/delete", articleController.deleteArticle);
+articleRouter.post("/edit", articleController.editArticle);
+articleRouter.post("/:Id", articleController.fetchArticleById);
+articleRouter.post("/featured", articleController.fetchFeaturedArticle);
 
 export default articleRouter;

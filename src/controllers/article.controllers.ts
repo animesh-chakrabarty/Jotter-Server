@@ -1,13 +1,21 @@
-export const createArticle = async (req: any, res: any) => {
-  return res.status(200).json({ message: "Now you can create article" });
+import express, { Request, Response } from "express";
+
+const createArticle = (req: Request, res: Response): void => {
+  res.json({ message: "Now you can create article" });
 };
 
-export const deleteArticle = async () => {};
+const deleteArticle = async () => {};
 
-export const editArticle = async () => {};
+const editArticle = async () => {};
 
-export const fetchArticleById = async () => {};
+const fetchArticleById = async () => {};
 
-export const fetchArticleByUserId = async () => {};
+const fetchFeaturedArticle = async () => {};
 
-export const fetchFeaturedArticle = async () => {};
+export const controllers = {
+  createArticle,
+  deleteArticle,
+  editArticle,
+  fetchArticleById,
+  fetchFeaturedArticle,
+};

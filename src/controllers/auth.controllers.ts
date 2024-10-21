@@ -9,3 +9,12 @@ export const resetPassword = async () => {};
 export const forgotPassword = async () => {};
 
 export const changeEmail = async () => {};
+
+export const controllers = {
+  signUp,
+  logIn,
+  verifyOTP,
+  resetPassword,
+  forgotPassword,
+  changeEmail,
+};

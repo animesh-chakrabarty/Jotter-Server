@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import router from "./routes/index.js";
+import authRouter from "./routes/auth.routes.js";
+import articleRouter from "./routes/article.routes.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -8,8 +9,8 @@ const PORT = process.env.PORT;
 const createApp = () => {
   const app = express();
 
-  app.use("/api/auth", router.authRouter);
-  app.use("/api/article", router.articleRouter);
+  app.use("/api/auth", authRouter);
+  app.use("/api/article", articleRouter);
 
   app.listen(PORT, () => {
     console.log(`Listening to PORT: ${PORT}`);
