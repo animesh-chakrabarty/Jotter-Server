@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Jotter Backend",
+  "main": "server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "npx tsc && node dist/server.js"
+  },
+  "author": "Animesh Chakrabarty <animeshchakrabarty.dev@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.7",
+    "typescript": "^5.6.3"
+  }
+}
