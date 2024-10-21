@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Ensure MONGO_URI is defined, or throw an error
 const MONGO_URI: string = process.env.MONGO_URI as string;
 
 if (!MONGO_URI) {
