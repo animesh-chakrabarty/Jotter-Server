@@ -1,11 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
+import connectDB from "./src/db/ConnectDB.js";
 dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "Hello From Server" });
-});
-app.listen(PORT, () => {
-    console.log(`listening to PORT: ${PORT}`);
+connectDB()
+    .then(() => {
+    app.listen(PORT, () => {
+        console.log(`listening to PORT: ${PORT}`);
+    });
+})
+    .catch((err) => {
+    console.error("Database connection failed - ", err.message || err);
+    process.exit(1);
 });
