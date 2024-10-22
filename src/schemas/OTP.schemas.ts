@@ -8,7 +8,7 @@ export const OTPSchema = new mongoose.Schema<OTPInterface>({
     unique: true,
   },
   OTP: {
-    type: Number,
+    type: String,
     required: true,
   },
   expirationTimeStamp: {

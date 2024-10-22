@@ -1,8 +1,6 @@
 import express, { Request, Response } from "express";
 
-const createArticle = (req: Request, res: Response): void => {
-  res.json({ message: "Now you can create article" });
-};
+const createArticle = async () => {};
 
 const deleteArticle = async () => {};
 

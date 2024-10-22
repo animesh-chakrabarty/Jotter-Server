@@ -1,5 +1,8 @@
-export interface OTPInterface {
+import { Document } from "mongoose";
+
+export interface OTPInterface extends Document{
   userId: string;
-  OTP: number;
+  OTP: string;
   expirationTimeStamp: Date;
 }
+
