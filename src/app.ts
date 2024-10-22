@@ -9,6 +9,8 @@ const PORT = process.env.PORT;
 const createApp = () => {
   const app = express();
 
+  app.use(express.json());
+
   app.use("/api/auth", authRouter);
   app.use("/api/article", articleRouter);
 
