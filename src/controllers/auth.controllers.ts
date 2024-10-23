@@ -5,6 +5,8 @@ import generateOTP from "../utils/generateOTP.js";
 import sendMail from "../utils/sendMail.js";
 import generateJWT from "../utils/generateJWT.js";
 import { OTPModel } from "../models/OTP.models.js";
+import validator from "validator";
+import verifyHash from "../utils/verifyHash.js";
 
 export const signUp = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
@@ -38,9 +40,7 @@ export const signUp = async (req: Request, res: Response) => {
     // generate JWT
     const token = generateJWT(user._id as string);
 
-    res
-      .status(200)
-      .json({ success: true, message: { email: user.email }, token: token });
+    res.status(200).json({ success: true, message: { token } });
   } catch (err: any) {
     res
       .status(400)
@@ -48,7 +48,31 @@ export const signUp = async (req: Request, res: Response) => {
   }
 };
 
-export const logIn = async () => {};
+export const logIn = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    // check is email is valid
+    if (!validator.isEmail(email)) throw new Error("Email is not valid");
+
+    // check if email exists in users collection
+    const userDoc: userInterface | null = await userModel.findOne({ email });
+    if (!userDoc) throw new Error("User doesn't exist");
+
+    // check if password matches
+    const doesPassMatch = await verifyHash(password, userDoc.password);
+    if (!doesPassMatch) throw new Error("Password is incorrect");
+
+    // generate JWT
+    const token = generateJWT(userDoc._id as string);
+
+    res.status(200).json({ success: true, message: { token } });
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 export const verifyOTP = async (req: Request, res: Response) => {
   const { OTP, _id } = req.body;
