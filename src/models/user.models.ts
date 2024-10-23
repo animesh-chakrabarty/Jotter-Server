@@ -55,7 +55,7 @@ userSchema.statics.registerUser = async function (
   }
 };
 
-export const userModel: userModelInterface = mongoose.model<
-  userInterface,
-  userModelInterface
->("user", userSchema);
+export const userModel = mongoose.model<userInterface, userModelInterface>(
+  "user",
+  userSchema
+);

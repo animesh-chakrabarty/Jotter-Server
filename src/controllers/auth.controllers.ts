@@ -50,7 +50,41 @@ export const signUp = async (req: Request, res: Response) => {
 
 export const logIn = async () => {};
 
-export const verifyOTP = async () => {};
+export const verifyOTP = async (req: Request, res: Response) => {
+  const { OTP, _id } = req.body;
+
+  try {
+    // retrieve OTP from DB
+    const doc = await OTPModel.findOne({ userId: _id });
+    if (!doc) throw new Error("No OTP in DB for this user");
+
+    // if OTP doesn't match - return 400 res
+    if (doc.OTP != OTP) {
+      throw new Error("OTP doesn't match");
+    }
+
+    // if timeLimit is over - return 400 res
+    if (doc.expirationTimeStamp < new Date(Date.now())) {
+      throw new Error("OTP has expired");
+    }
+
+    // if OTP matches & within time limit - return 200 res
+    if (doc.OTP == OTP && doc.expirationTimeStamp >= new Date(Date.now())) {
+      // update isVerified to true
+      const userDoc = await userModel.findByIdAndUpdate(_id, {
+        isVerified: true,
+      });
+
+      // delete OTP doc
+      const deleteOTPDoc = await OTPModel.findOneAndDelete({ userId: _id });
+      res.status(200).json({ success: true, message: "user is verified" });
+    }
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 export const resetPassword = async () => {};
 

@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Model } from "mongoose";
 
 export interface userInterface extends Document {
   firstName: string;
@@ -8,7 +8,7 @@ export interface userInterface extends Document {
   isVerified?: boolean;
 }
 
-export interface userModelInterface extends userInterface {
+export interface userModelInterface extends Model<userInterface> {
   registerUser(
     firstName: string,
     lastName: string,
