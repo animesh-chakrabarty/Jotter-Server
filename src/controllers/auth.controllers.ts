@@ -40,7 +40,9 @@ export const signUp = async (req: Request, res: Response) => {
     // generate JWT
     const token = generateJWT(user._id as string);
 
-    res.status(200).json({ success: true, message: { token } });
+    res
+      .status(200)
+      .json({ success: true, message: `OTP sent to ${email}`, token });
   } catch (err: any) {
     res
       .status(400)
@@ -101,7 +103,9 @@ export const verifyOTP = async (req: Request, res: Response) => {
 
       // delete OTP doc
       const deleteOTPDoc = await OTPModel.findOneAndDelete({ userId: _id });
-      res.status(200).json({ success: true, message: "user is verified" });
+      res
+        .status(200)
+        .json({ success: true, message: "OTP verification successful" });
     }
   } catch (err: any) {
     res
@@ -112,7 +116,44 @@ export const verifyOTP = async (req: Request, res: Response) => {
 
 export const resetPassword = async () => {};
 
-export const forgotPassword = async () => {};
+export const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  try {
+    // check if email is valid
+    if (!validator.isEmail(email)) throw new Error("Email is not valid");
+
+    // check if email exists in DB
+    const userDoc: userInterface | null = await userModel.findOne({
+      email,
+    });
+    if (!userDoc) throw new Error("User doesn't exist");
+
+    // generate OTP
+    const OTP = generateOTP();
+
+    // write OTP to DB
+    await OTPModel.create({
+      userId: userDoc._id as string,
+      OTP,
+      expirationTimeStamp: new Date(Date.now() + 3600000),
+    });
+
+    // generate JWT
+    const token = generateJWT(userDoc._id as string);
+
+    // send OTP
+    const ack = await sendMail(email, OTP);
+
+    res
+      .status(200)
+      .json({ success: false, message: `OTP sent to ${email}`, token });
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 export const changeEmail = async () => {};
 
