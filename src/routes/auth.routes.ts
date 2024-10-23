@@ -9,6 +9,7 @@ authRouter.post("/log-in", authControllers.logIn);
 authRouter.post("/verify-otp", verifyToken, authControllers.verifyOTP);
 authRouter.post("/reset-password", authControllers.resetPassword);
 authRouter.post("/forgot-password", authControllers.forgotPassword);
+authRouter.post("/set-new-password", verifyToken, authControllers.setNewPassword);
 authRouter.post("/change-email", verifyToken, authControllers.changeEmail);
 
 export default authRouter;

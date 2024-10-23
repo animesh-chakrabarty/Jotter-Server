@@ -7,6 +7,7 @@ import generateJWT from "../utils/generateJWT.js";
 import { OTPModel } from "../models/OTP.models.js";
 import validator from "validator";
 import verifyHash from "../utils/verifyHash.js";
+import { hashContent } from "../utils/hashContent.js";
 
 export const signUp = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
@@ -155,6 +156,33 @@ export const forgotPassword = async (req: Request, res: Response) => {
   }
 };
 
+export const setNewPassword = async (req: Request, res: Response) => {
+  const { newPassword, _id } = req.body;
+
+  try {
+    // check if password not null
+    if (!newPassword) throw new Error("password is required");
+
+    // check if password strong
+    if (!validator.isStrongPassword(newPassword))
+      throw new Error("password is not strong");
+
+    // hash new password
+    const hashedNewPass: string = await hashContent(newPassword as string);
+
+    // update password in DB
+    await userModel.findByIdAndUpdate(_id, { password: hashedNewPass });
+
+    res
+      .status(200)
+      .json({ success: true, message: "password updated successfully" });
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
+
 export const changeEmail = async () => {};
 
 export const controllers = {
@@ -163,5 +191,6 @@ export const controllers = {
   verifyOTP,
   resetPassword,
   forgotPassword,
+  setNewPassword,
   changeEmail,
 };
