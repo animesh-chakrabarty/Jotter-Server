@@ -115,7 +115,27 @@ export const verifyOTP = async (req: Request, res: Response) => {
   }
 };
 
-export const resetPassword = async () => {};
+export const resetPassword = async (req: Request, res: Response) => {
+  const { _id, oldPassword } = req.body;
+
+  try {
+    const userDoc: userInterface | null = await userModel.findById(_id);
+    if (!userDoc) throw new Error("user doesn't exist");
+
+    // check if oldPassword matches with the stored password in the DB
+    const doesPassMatch = await verifyHash(
+      oldPassword as string,
+      userDoc?.password as string
+    );
+    if (!doesPassMatch) throw new Error("password is incorrect");
+
+    await setNewPassword(req, res);
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
