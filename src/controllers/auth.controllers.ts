@@ -8,6 +8,7 @@ import { OTPModel } from "../models/OTP.models.js";
 import validator from "validator";
 import verifyHash from "../utils/verifyHash.js";
 import { hashContent } from "../utils/hashContent.js";
+import verifyPassword from "../utils/verifyPassword.js";
 
 export const signUp = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
@@ -104,6 +105,7 @@ export const verifyOTP = async (req: Request, res: Response) => {
 
       // delete OTP doc
       const deleteOTPDoc = await OTPModel.findOneAndDelete({ userId: _id });
+
       res
         .status(200)
         .json({ success: true, message: "OTP verification successful" });
@@ -203,7 +205,46 @@ export const setNewPassword = async (req: Request, res: Response) => {
   }
 };
 
-export const changeEmail = async () => {};
+// export const changeEmail = async (req: Request, res: Response) => {
+//   const { newEmail, _id } = req.body;
+
+//   try {
+//     // generate OTP
+//     const OTP = generateOTP();
+
+//     // save OTP to DB
+//     const OTPDoc = new OTPModel({
+//       userId: _id,
+//       OTP,
+//       expirationTimeStamp: new Date(Date.now() + 3600000),
+//     });
+//     await OTPDoc.save();
+
+//     // send OTP
+//     const ack = await sendMail(newEmail, OTP);
+
+//     res.status(200).json({ success: true, message: `OTP sent to ${newEmail}` });
+//   } catch (err: any) {
+//     res
+//       .status(400)
+//       .json({ success: false, message: err.message || err.toString() });
+//   }
+// };
+
+// export const verifyPass = async (req: Request, res: Response) => {
+//   const { password, _id } = req.body;
+
+//   try {
+//     const { success, message } = await verifyPassword(_id, password);
+//     if (!success) throw new Error(message);
+
+//     res.status(200).json({ success: true, message });
+//   } catch (err: any) {
+//     res
+//       .status(400)
+//       .json({ success: false, message: err.message || err.toString() });
+//   }
+// };
 
 export const controllers = {
   signUp,
@@ -212,5 +253,6 @@ export const controllers = {
   resetPassword,
   forgotPassword,
   setNewPassword,
-  changeEmail,
+  // verifyPass,
+  // changeEmail,
 };
