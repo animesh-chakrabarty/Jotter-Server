@@ -4,8 +4,8 @@ import verifyToken from "../middlewares/verifyToken.middlewares.js";
 
 const articleRouter = express.Router();
 
-articleRouter.post("/save-to-draft", verifyToken, articleController.createArticle);
-articleRouter.post("/publish", verifyToken, articleController.createArticle);
+articleRouter.post("/save-to-draft", verifyToken, articleController.publishArticle);
+articleRouter.post("/publish", verifyToken, articleController.publishArticle);
 articleRouter.post("/delete", verifyToken, articleController.deleteArticle);
 articleRouter.post("/edit", verifyToken, articleController.editArticle);
 articleRouter.post("/:Id", articleController.fetchArticleById);

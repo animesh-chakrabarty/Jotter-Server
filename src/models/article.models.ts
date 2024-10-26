@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import articleSchema from "../schemas/article.schemas";
+import articleSchema from "../schemas/article.schemas.js";
 import {
   articleInterface,
   articleModelInterface,

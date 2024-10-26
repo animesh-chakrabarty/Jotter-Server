@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { articleInterface } from "../interfaces/article.interfaces";
+import { articleInterface } from "../interfaces/article.interfaces.js";
 
 const articleSchema = new mongoose.Schema<articleInterface>({
   title: {
