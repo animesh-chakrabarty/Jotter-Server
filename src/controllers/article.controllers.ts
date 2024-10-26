@@ -27,7 +27,29 @@ const publishArticle = async (req: Request, res: Response) => {
   }
 };
 
-const deleteArticle = async () => {};
+const deleteArticle = async (req: Request, res: Response) => {
+  const { _id, articleId } = req.body;
+
+  try {
+    const articleDoc = await articleModel.findById(articleId);
+    if (!articleDoc) throw new Error("Article doesn't exist");
+
+    if (articleDoc.authorId != _id)
+      throw new Error(
+        "You're not the author of the article you're trying to delete"
+      );
+
+    await articleModel.findByIdAndDelete(articleDoc._id);
+
+    res
+      .status(200)
+      .json({ success: true, message: "article deleted successfully" });
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 const editArticle = async () => {};
 

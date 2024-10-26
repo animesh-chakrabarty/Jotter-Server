@@ -20,8 +20,11 @@ const verifyToken = async (
 
     if (!doc) throw new Error("user not found");
 
+    if (req.originalUrl != "/api/auth/verify-otp" && !doc.isVerified)
+      throw new Error("Please verify the OTP first");
+
     req.body._id = userId;
-    
+
     next();
   } catch (err: any) {
     res
