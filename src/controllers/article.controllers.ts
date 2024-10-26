@@ -51,7 +51,32 @@ const deleteArticle = async (req: Request, res: Response) => {
   }
 };
 
-const editArticle = async () => {};
+const editArticle = async (req: Request, res: Response) => {
+  const { _id, articleId } = req.body;
+
+  try {
+    const articleDoc = await articleModel.findById(articleId);
+    if (!articleDoc) throw new Error("Article doesn't exist");
+
+    if (articleDoc.authorId != _id)
+      throw new Error(
+        "You're not the author of the article you're trying to edit"
+      );
+
+    res.status(200).json({
+      success: true,
+      message: "article attached",
+      article: {
+        title: articleDoc.title,
+        content: articleDoc.content,
+      },
+    });
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 const fetchArticleById = async () => {};
 
