@@ -8,7 +8,7 @@ articleRouter.post("/save-to-draft", verifyToken, articleController.publishArtic
 articleRouter.post("/publish", verifyToken, articleController.publishArticle);
 articleRouter.post("/delete", verifyToken, articleController.deleteArticle);
 articleRouter.post("/edit", verifyToken, articleController.editArticle);
-articleRouter.post("/:Id", articleController.fetchArticleById);
+articleRouter.get("/:articleId", articleController.fetchArticleById);
 articleRouter.post("/featured", articleController.fetchFeaturedArticle);
 
 export default articleRouter;

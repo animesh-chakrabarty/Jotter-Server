@@ -78,7 +78,24 @@ const editArticle = async (req: Request, res: Response) => {
   }
 };
 
-const fetchArticleById = async () => {};
+const fetchArticleById = async (req: Request, res: Response) => {
+  const { articleId } = req.params;
+
+  try {
+    const articleDoc = await articleModel.findById(articleId);
+    if (!articleDoc) throw new Error("Article doesn't exist");
+
+    res.status(200).json({
+      success: true,
+      message: "article attached",
+      article: articleDoc,
+    });
+  } catch (err: any) {
+    res
+      .status(400)
+      .json({ success: false, message: err.message || err.toString() });
+  }
+};
 
 const fetchFeaturedArticle = async () => {};
 
