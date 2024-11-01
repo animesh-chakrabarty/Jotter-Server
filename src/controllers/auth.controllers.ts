@@ -70,7 +70,9 @@ export const logIn = async (req: Request, res: Response) => {
     // generate JWT
     const token = generateJWT(userDoc._id as string);
 
-    res.status(200).json({ success: true, message: { token } });
+    res
+      .status(200)
+      .json({ success: true, message: "Logged in successfully", token });
   } catch (err: any) {
     res
       .status(400)
